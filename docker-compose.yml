@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # --- FRONTEND (A weboldal) ---
+  frontend:
+    build: ./frontend
+    container_name: football-frontend
+    ports:
+      - "80:80"  # A böngészőben a localhost-on fog bejönni
+    depends_on:
+      - backend
+
+  # --- BACKEND (Az API szerver) ---
+  backend:
+    build: ./backend
+    container_name: football-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DB_NAME=football-app
+      - TOKEN_SECRET=titkosjelszo123
+      - MONGO_LOCAL=true
+      - DB_URL=mongo:27017 
+    depends_on:
+      - mongo
+    # --- EZT A RÉSZT ADD HOZZÁ ---
+    volumes:
+      - ./backend/uploads:/app/uploads
+    # -----------------------------
+
+  # --- ADATBÁZIS (MongoDB) ---
+  mongo:
+    image: mongo:latest
+    container_name: football-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

@@ -1,0 +1,285 @@
+.championships-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding: 100px 12px 12px;
+}
+
+.matches-table, .standings-table {
+  background-color: white;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.matches-table th, .matches-table td,
+.standings-table th, .standings-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.matches-table th, .standings-table th {
+  background-color: #f2f2f2;
+}
+
+.generate-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.generate-button:hover {
+  background-color: #45a049;
+}
+
+
+.score-display {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.score-display:hover {
+  background-color: #f0f0f0;
+}
+
+.score-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.score-input {
+  width: 40px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.save-button, .cancel-button, .play-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.play-button {
+  background-color: #0d0df9;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+.play-button:hover {
+  background-color: #2222ff;
+}
+
+
+.standings-section {
+  margin-top: 20px;
+}
+
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.standings-table th,
+.standings-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.standings-table th {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+.standings-table tbody tr:first-child td:first-child {
+  background-color: gold;
+  font-weight: bold;
+}
+
+.standings-table tbody tr:last-child td:first-child {
+  background-color: red;
+  font-weight: bold;
+}
+
+.standings-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.standings-table tbody tr:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.3s ease;
+}
+
+.standings-table td:first-child {
+  font-weight: bold;
+  color: #333;
+}
+
+.standings-table td:nth-child(2) {
+  text-align: left;
+  padding-left: 15px;
+}
+
+.knockout-section {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 80%;
+  overflow-x: auto;
+}
+
+
+.knockout-section h2 {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.knockout-bracket {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.knockout-match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  width: 80%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.knockout-match:hover {
+  background-color: #f0f8ff;
+  border-color: #007bff;
+  transform: translateY(-3px);
+}
+
+.knockout-match div {
+  font-size: 1rem;
+  color: #555;
+}
+
+.knockout-match div:first-child {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.knockout-match div:nth-child(2) {
+  font-size: 1.1rem;
+  color: #007bff;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #444;
+}
+
+.modal-close:hover {
+  color: #ff0000;
+}
+
+.close-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

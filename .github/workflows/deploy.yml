@@ -1,0 +1,77 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ] # Ha 'main' vagy 'master' ágra töltesz fel, elindul
+
+jobs:
+  # --- 1. LÉPÉS: TESZTELÉS (A GitHub szerverén) ---
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kód letöltése
+        uses: actions/checkout@v3
+      
+      # Backend tesztek
+      - name: Node.js telepítése (Backend)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Backend függőségek telepítése
+        run: |
+          cd backend
+          npm install
+          
+      - name: Backend Tesztek futtatása
+        run: |
+          cd backend
+          npm run test
+
+      # Frontend tesztek
+      - name: Frontend függőségek telepítése
+        run: |
+          cd frontend
+          npm install
+          
+      - name: Frontend Unit Tesztek futtatása
+        run: |
+          cd frontend
+          npm run test
+
+  # --- 2. LÉPÉS: DEPLOY (Csak ha a tesztek sikeresek) ---
+  deploy:
+    needs: test # Csak akkor indul, ha a 'test' job zöld volt
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Deploy to DigitalOcean via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}          # A szervered IP címe (Titkos)
+          username: ${{ secrets.USERNAME }}  # Pl. root (Titkos)
+          key: ${{ secrets.SSH_KEY }}        # A privát SSH kulcsod (Titkos)
+          script: |
+            # --- EZ FUT LE A SZERVEREDEN ---
+            
+            # Belépünk a projekt mappába (vagy létrehozzuk, ha nincs)
+            # FONTOS: Ha a szerveren máshol van a projekt, írd át a 'td'-t!
+            mkdir -p ~/td && cd ~/td
+            
+            # Ellenőrizzük, hogy van-e már git repo
+            if [ -d ".git" ]; then
+              echo "Repo már létezik, frissítés..."
+              git pull origin main
+            else
+              echo "Repo klónozása..."
+              # !!! CSERÉLD LE EZT A SAJÁT GITHUB REPO URL-EDRE !!!
+              # Példa: git clone https://github.com/TorokDani/vizsga-projekt.git .
+              git clone https://github.com/FELHASZNALONEV/REPO_NEV .
+            fi
+            
+            # Docker konténerek újraépítése és indítása
+            echo "Docker újraindítása..."
+            docker-compose down
+            docker-compose up -d --build
+            
+            echo "Kész! Az alkalmazás frissült."

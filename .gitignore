@@ -1,0 +1,25 @@
+node_modules
+dist
+.env
+.DS_Store
+coverage
+
+
+*(Ha már van ilyen fájlod, ellenőrizd, hogy a `node_modules` benne van-e).*
+
+#### 2. Lépés: Töröld a szemetet a Git memóriájából
+
+Nyisd meg a terminált a projekt mappájában (`td`), és futtasd le ezeket a parancsokat **sorban, egyenként**:
+
+```bash
+# 1. Kitöröljük a fájlokat a Git "memóriájából" (a gépedről nem törlődnek!)
+git rm -r --cached .
+
+# 2. Újra hozzáadunk mindent (most már figyelembe veszi a .gitignore-t)
+git add .
+
+# 3. Elmentjük a javítást
+git commit -m "Fix: Remove node_modules from git"
+
+# 4. Feltöltjük a javítást
+git push

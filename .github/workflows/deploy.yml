@@ -52,20 +52,26 @@ jobs:
           username: ${{ secrets.USERNAME }}  # Pl. root (Titkos)
           key: ${{ secrets.SSH_KEY }}        # A privát SSH kulcsod (Titkos)
           script: |
-            # Belépés a mappába
+            # --- EZ FUT LE A SZERVEREDEN ---
+            
+            # Belépünk a projekt mappába (vagy létrehozzuk, ha nincs)
+            # FONTOS: Ha a szerveren máshol van a projekt, írd át a 'td'-t!
             mkdir -p ~/td && cd ~/td
             
-            # Kód frissítése
+            # Ellenőrizzük, hogy van-e már git repo
             if [ -d ".git" ]; then
+              echo "Repo már létezik, frissítés..."
               git pull origin main
             else
-              # Cseréld le a saját repódra!
+              echo "Repo klónozása..."
+              # !!! CSERÉLD LE EZT A SAJÁT GITHUB REPO URL-EDRE !!!
+              # Példa: git clone https://github.com/TorokDani/vizsga-projekt.git .
               git clone https://github.com/FELHASZNALONEV/REPO_NEV .
             fi
             
-            # Újraindítás (Modern parancsokkal)
+            # Docker konténerek újraépítése és indítása
             echo "Docker újraindítása..."
-            docker compose down || docker-compose down
-            docker compose up -d --build || docker-compose up -d --build
+            docker-compose down
+            docker-compose up -d --build
             
             echo "Kész! Az alkalmazás frissült."

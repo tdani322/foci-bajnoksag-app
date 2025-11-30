@@ -52,26 +52,37 @@ jobs:
           username: ${{ secrets.USERNAME }}  # Pl. root (Titkos)
           key: ${{ secrets.SSH_KEY }}        # A privát SSH kulcsod (Titkos)
           script: |
-            # --- EZ FUT LE A SZERVEREDEN ---
-            
-            # Belépünk a projekt mappába (vagy létrehozzuk, ha nincs)
-            # FONTOS: Ha a szerveren máshol van a projekt, írd át a 'td'-t!
+            # Belépés a mappába
             mkdir -p ~/td && cd ~/td
             
-            # Ellenőrizzük, hogy van-e már git repo
+            # Kód frissítése
             if [ -d ".git" ]; then
-              echo "Repo már létezik, frissítés..."
               git pull origin main
             else
-              echo "Repo klónozása..."
-              # !!! CSERÉLD LE EZT A SAJÁT GITHUB REPO URL-EDRE !!!
-              # Példa: git clone https://github.com/TorokDani/vizsga-projekt.git .
-              git clone https://github.com/FELHASZNALONEV/REPO_NEV .
+              git clone https://github.com/tdani322/foci-bajnoksag-app .
             fi
             
-            # Docker konténerek újraépítése és indítása
-            echo "Docker újraindítása..."
+            # Újraindítás
             docker-compose down
             docker-compose up -d --build
             
-            echo "Kész! Az alkalmazás frissült."
+            # --- HIBAKERESÉS ÉS JAVÍTÁS (EZ AZ ÚJ RÉSZ) ---
+            
+            # 1. Tűzfal kinyitása (Biztos, ami biztos)
+            echo "Tűzfal beállítása..."
+            ufw allow 80/tcp
+            ufw allow 3001/tcp
+            ufw --force enable
+            
+            # 2. Várakozás, hogy elinduljanak a konténerek
+            sleep 10
+            
+            # 3. Állapot lekérdezése (Hogy lássuk a GitHubon, mi történt)
+            echo "=== DOCKER STATUS ==="
+            docker ps -a
+            
+            echo "=== FRONTEND LOGS ==="
+            docker logs football-frontend
+            
+            echo "=== BACKEND LOGS ==="
+            docker logs football-backend

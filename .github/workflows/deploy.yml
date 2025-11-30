@@ -59,30 +59,13 @@ jobs:
             if [ -d ".git" ]; then
               git pull origin main
             else
-              git clone https://github.com/tdani322/foci-bajnoksag-app .
+              # Cseréld le a saját repódra!
+              git clone https://github.com/FELHASZNALONEV/REPO_NEV .
             fi
             
-            # Újraindítás
-            docker-compose down
-            docker-compose up -d --build
+            # Újraindítás (Modern parancsokkal)
+            echo "Docker újraindítása..."
+            docker compose down || docker-compose down
+            docker compose up -d --build || docker-compose up -d --build
             
-            # --- HIBAKERESÉS ÉS JAVÍTÁS (EZ AZ ÚJ RÉSZ) ---
-            
-            # 1. Tűzfal kinyitása (Biztos, ami biztos)
-            echo "Tűzfal beállítása..."
-            ufw allow 80/tcp
-            ufw allow 3001/tcp
-            ufw --force enable
-            
-            # 2. Várakozás, hogy elinduljanak a konténerek
-            sleep 10
-            
-            # 3. Állapot lekérdezése (Hogy lássuk a GitHubon, mi történt)
-            echo "=== DOCKER STATUS ==="
-            docker ps -a
-            
-            echo "=== FRONTEND LOGS ==="
-            docker logs football-frontend
-            
-            echo "=== BACKEND LOGS ==="
-            docker logs football-backend
+            echo "Kész! Az alkalmazás frissült."

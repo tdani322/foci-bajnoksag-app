@@ -52,26 +52,39 @@ jobs:
           username: ${{ secrets.USERNAME }}  # Pl. root (Titkos)
           key: ${{ secrets.SSH_KEY }}        # A privát SSH kulcsod (Titkos)
           script: |
-            # --- EZ FUT LE A SZERVEREDEN ---
-            
-            # Belépünk a projekt mappába (vagy létrehozzuk, ha nincs)
-            # FONTOS: Ha a szerveren máshol van a projekt, írd át a 'td'-t!
+            # --- 1. DOCKER TELEPÍTÉSE (HA NINCS) ---
+            if ! command -v docker &> /dev/null; then
+                echo "Docker nincs telepítve. Telepítés indítása..."
+                curl -fsSL https://get.docker.com -o get-docker.sh
+                sh get-docker.sh
+            fi
+
+            # --- 2. BELÉPÉS A MAPPÁBA ---
             mkdir -p ~/td && cd ~/td
             
-            # Ellenőrizzük, hogy van-e már git repo
+            # --- 3. KÓD FRISSÍTÉSE ---
+            # (Mivel publikus lett a repo, a HTTPS link jelszó nélkül működni fog)
             if [ -d ".git" ]; then
-              echo "Repo már létezik, frissítés..."
+              echo "Frissítés..."
               git pull origin main
             else
-              echo "Repo klónozása..."
-              # !!! CSERÉLD LE EZT A SAJÁT GITHUB REPO URL-EDRE !!!
-              # Példa: git clone https://github.com/TorokDani/vizsga-projekt.git .
+              echo "Klónozás..."
+              # CSERÉLD LE A SAJÁT REPÓD CÍMÉRE!
               git clone https://github.com/FELHASZNALONEV/REPO_NEV .
             fi
             
-            # Docker konténerek újraépítése és indítása
-            echo "Docker újraindítása..."
-            docker-compose down
-            docker-compose up -d --build
+            # --- 4. TŰZFAL (Biztos, ami biztos) ---
+            ufw allow 22/tcp
+            ufw allow 80/tcp
+            ufw allow 3001/tcp
+            ufw --force enable
             
-            echo "Kész! Az alkalmazás frissült."
+            # --- 5. INDÍTÁS ---
+            echo "Indítás..."
+            # A modern Dockerben már 'docker compose' a parancs
+            docker compose down || docker-compose down
+            docker compose up -d --build
+            
+            echo "Kész! Ellenőrzés..."
+            sleep 5
+            docker ps -a

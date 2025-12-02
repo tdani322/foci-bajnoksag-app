@@ -14,7 +14,7 @@ const Championships = () => {
   const [error, setError] = useState(null)
   const { id } = useParams()
   const navigate = useNavigate()
-  const API_URL = 'http://localhost:3001';
+  const API_URL = '/api';
   
 
 

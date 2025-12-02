@@ -7,7 +7,7 @@ function TournamentViewer() {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  const API_URL = 'http://localhost:3001'
+  const API_URL = '/api'
 
   useEffect(() => {
     const fetchData = async () => {

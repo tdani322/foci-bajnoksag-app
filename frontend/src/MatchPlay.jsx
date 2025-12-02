@@ -12,7 +12,7 @@ const MatchPlay = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [scores, setScores] = useState({ home: 0, away: 0 });
   const [matchDuration, setMatchDuration] = useState(90);
-  const API_URL = 'http://localhost:3001';
+  const API_URL = '/api';
   
 
   useEffect(() => {

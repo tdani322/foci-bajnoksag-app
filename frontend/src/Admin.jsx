@@ -19,7 +19,7 @@ const App = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate()
 
-  const API_URL = 'http://localhost:3001';
+  const API_URL = '/api';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
